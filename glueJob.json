@@ -1,0 +1,307 @@
+{
+  "jobConfig": {
+    "name": "DataLakeChallenge",
+    "description": "",
+    "role": "arn:aws:iam::281579499462:role/AWSGlueServiceRoleDefault",
+    "command": "glueetl",
+    "version": "3.0",
+    "workerType": "G.1X",
+    "numberOfWorkers": 10,
+    "maxCapacity": 10,
+    "maxRetries": 0,
+    "timeout": 2880,
+    "maxConcurrentRuns": 10,
+    "security": "none",
+    "scriptName": "DataLakeChallenge.py",
+    "scriptLocation": "s3://aws-glue-assets-281579499462-eu-west-1/scripts/",
+    "language": "python-3",
+    "jobParameters": [],
+    "tags": [],
+    "jobMode": "DEVELOPER_MODE",
+    "useGlueProvidedDataLakeLibs": false,
+    "developerMode": true,
+    "connectionsList": [],
+    "temporaryDirectory": "s3://aws-glue-assets-281579499462-eu-west-1/temporary/",
+    "etlAutoScaling": true,
+    "logging": true,
+    "glueHiveMetastore": true,
+    "etlAutoTuning": true,
+    "metrics": true,
+    "spark": true,
+    "bookmark": "job-bookmark-disable",
+    "sparkPath": "s3://aws-glue-assets-281579499462-eu-west-1/sparkHistoryLogs/",
+    "flexExecution": false,
+    "minFlexWorkers": null,
+    "pythonPath": null
+  },
+  "dag": {
+    "node-1": {
+      "nodeId": "node-1",
+      "dataPreview": false,
+      "previewAmount": 0,
+      "inputs": [],
+      "name": "S3 bucket",
+      "generatedNodeName": "S3bucket_node1",
+      "classification": "DataSource",
+      "type": "S3",
+      "isCatalog": false,
+      "format": "csv",
+      "paths": [
+        "s3://raw-uber-data"
+      ],
+      "compressionType": null,
+      "exclusions": [],
+      "groupFiles": null,
+      "groupSize": null,
+      "recurse": true,
+      "maxBand": null,
+      "maxFilesInBand": null,
+      "additionalOptions": {
+        "boundedSize": null,
+        "boundedFiles": null,
+        "enableSamplePath": false,
+        "samplePath": "s3://raw-uber-data/Travel_Times - Bogota.csv",
+        "boundedOption": null
+      },
+      "separator": ",",
+      "escaper": "",
+      "quoteChar": "\"",
+      "multiline": null,
+      "withHeader": true,
+      "writeHeader": null,
+      "skipFirst": null,
+      "optimizePerformance": false,
+      "outputSchemas": [
+        [
+          {
+            "key": "Origin Movement ID",
+            "fullPath": [
+              "Origin Movement ID"
+            ],
+            "type": "string",
+            "children": null
+          },
+          {
+            "key": "Origin Display Name",
+            "fullPath": [
+              "Origin Display Name"
+            ],
+            "type": "string",
+            "children": null
+          },
+          {
+            "key": "Origin Geometry",
+            "fullPath": [
+              "Origin Geometry"
+            ],
+            "type": "string",
+            "children": null
+          },
+          {
+            "key": "Destination Movement ID",
+            "fullPath": [
+              "Destination Movement ID"
+            ],
+            "type": "string",
+            "children": null
+          },
+          {
+            "key": "Destination Display Name",
+            "fullPath": [
+              "Destination Display Name"
+            ],
+            "type": "string",
+            "children": null
+          },
+          {
+            "key": "Destination Geometry",
+            "fullPath": [
+              "Destination Geometry"
+            ],
+            "type": "string",
+            "children": null
+          },
+          {
+            "key": "Date Range",
+            "fullPath": [
+              "Date Range"
+            ],
+            "type": "string",
+            "children": null
+          },
+          {
+            "key": "Mean Travel Time (Seconds)",
+            "fullPath": [
+              "Mean Travel Time (Seconds)"
+            ],
+            "type": "string",
+            "children": null
+          },
+          {
+            "key": "Range - Lower Bound Travel Time (Seconds)",
+            "fullPath": [
+              "Range - Lower Bound Travel Time (Seconds)"
+            ],
+            "type": "string",
+            "children": null
+          },
+          {
+            "key": "Range - Upper Bound Travel Time (Seconds)",
+            "fullPath": [
+              "Range - Upper Bound Travel Time (Seconds)"
+            ],
+            "type": "string",
+            "children": null
+          }
+        ]
+      ],
+      "calculatedType": "",
+      "codeGenVersion": 2
+    },
+    "node-2": {
+      "nodeId": "node-2",
+      "dataPreview": false,
+      "previewAmount": 0,
+      "inputs": [
+        "node-1"
+      ],
+      "name": "ApplyMapping",
+      "generatedNodeName": "ApplyMapping_node2",
+      "classification": "Transform",
+      "type": "ApplyMapping",
+      "mapping": [
+        {
+          "toKey": "origin_id",
+          "fromPath": [
+            "Origin Movement ID"
+          ],
+          "toType": "long",
+          "fromType": "string",
+          "dropped": false,
+          "children": null
+        },
+        {
+          "toKey": "origin_name",
+          "fromPath": [
+            "Origin Display Name"
+          ],
+          "toType": "string",
+          "fromType": "string",
+          "dropped": false,
+          "children": null
+        },
+        {
+          "toKey": "origin_geometry",
+          "fromPath": [
+            "Origin Geometry"
+          ],
+          "toType": "string",
+          "fromType": "string",
+          "dropped": false,
+          "children": null
+        },
+        {
+          "toKey": "destination_id",
+          "fromPath": [
+            "Destination Movement ID"
+          ],
+          "toType": "long",
+          "fromType": "string",
+          "dropped": false,
+          "children": null
+        },
+        {
+          "toKey": "destination_name",
+          "fromPath": [
+            "Destination Display Name"
+          ],
+          "toType": "string",
+          "fromType": "string",
+          "dropped": false,
+          "children": null
+        },
+        {
+          "toKey": "destination_geometry",
+          "fromPath": [
+            "Destination Geometry"
+          ],
+          "toType": "string",
+          "fromType": "string",
+          "dropped": false,
+          "children": null
+        },
+        {
+          "toKey": "date_range",
+          "fromPath": [
+            "Date Range"
+          ],
+          "toType": "string",
+          "fromType": "string",
+          "dropped": false,
+          "children": null
+        },
+        {
+          "toKey": "mean_travel_time",
+          "fromPath": [
+            "Mean Travel Time (Seconds)"
+          ],
+          "toType": "long",
+          "fromType": "string",
+          "dropped": false,
+          "children": null
+        },
+        {
+          "toKey": "lower_travel_time",
+          "fromPath": [
+            "Range - Lower Bound Travel Time (Seconds)"
+          ],
+          "toType": "long",
+          "fromType": "string",
+          "dropped": false,
+          "children": null
+        },
+        {
+          "toKey": "upper_travel_time",
+          "fromPath": [
+            "Range - Upper Bound Travel Time (Seconds)"
+          ],
+          "toType": "long",
+          "fromType": "string",
+          "dropped": false,
+          "children": null
+        }
+      ],
+      "parentsValid": true,
+      "calculatedType": "",
+      "codeGenVersion": 2
+    },
+    "node-3": {
+      "nodeId": "node-3",
+      "dataPreview": false,
+      "previewAmount": 0,
+      "inputs": [
+        "node-2"
+      ],
+      "name": "S3 bucket",
+      "generatedNodeName": "S3bucket_node3",
+      "classification": "DataSink",
+      "type": "S3",
+      "streamingBatchInterval": 100,
+      "format": "glueparquet",
+      "compression": "snappy",
+      "path": "s3://processed-uber-data/DataLakeChallenge/",
+      "partitionKeys": [],
+      "schemaChangePolicy": {
+        "enableUpdateCatalog": false,
+        "updateBehavior": null,
+        "database": null,
+        "table": null
+      },
+      "updateCatalogOptions": "none",
+      "calculatedType": "",
+      "codeGenVersion": 2
+    }
+  },
+  "hasBeenSaved": false,
+  "script": "import sys\nfrom awsglue.transforms import *\nfrom awsglue.utils import getResolvedOptions\nfrom pyspark.context import SparkContext\nfrom awsglue.context import GlueContext\nfrom awsglue.job import Job\n\n\nargs = getResolvedOptions(sys.argv, [\"JOB_NAME\", \"file_key\"])\nsc = SparkContext()\nglueContext = GlueContext(sc)\nspark = glueContext.spark_session\nlogger = glueContext.get_logger()\njob = Job(glueContext)\njob.init(args[\"JOB_NAME\"], args)\nlogger.info(args['file_key'].replace('+', ' '))\nfile_name = args['file_key'].replace('+', ' ').rstrip()\n\n# Script generated for node S3 bucket\nS3bucket_node1 = glueContext.create_dynamic_frame.from_options(\n    format_options={\n        \"quoteChar\": '\"',\n        \"withHeader\": True,\n        \"separator\": \",\",\n        \"optimizePerformance\": False,\n    },\n    connection_type=\"s3\",\n    format=\"csv\",\n    connection_options={\"paths\": [\"s3://raw-uber-data/\" + file_name]},\n    transformation_ctx=\"S3bucket_node1\",\n)\n\n# Script generated for node ApplyMapping\nApplyMapping_node2 = ApplyMapping.apply(\n    frame=S3bucket_node1,\n    mappings=[\n        (\"Origin Movement ID\", \"string\", \"origin_id\", \"long\"),\n        (\"Origin Display Name\", \"string\", \"origin_name\", \"string\"),\n        (\"Origin Geometry\", \"string\", \"origin_geometry\", \"string\"),\n        (\"Destination Movement ID\", \"string\", \"destination_id\", \"long\"),\n        (\"Destination Display Name\", \"string\", \"destination_name\", \"string\"),\n        (\"Destination Geometry\", \"string\", \"destination_geometry\", \"string\"),\n        (\"Date Range\", \"string\", \"date_range\", \"string\"),\n        (\"`Mean Travel Time (Seconds)`\", \"string\", \"mean_travel_time\", \"long\"),\n        (\n            \"`Range - Lower Bound Travel Time (Seconds)`\",\n            \"string\",\n            \"lower_travel_time\",\n            \"long\",\n        ),\n        (\n            \"`Range - Upper Bound Travel Time (Seconds)`\",\n            \"string\",\n            \"upper_travel_time\",\n            \"long\",\n        ),\n    ],\n    transformation_ctx=\"ApplyMapping_node2\",\n)\n\n\n# Script generated for node S3 bucket\nS3bucket_node3 = glueContext.write_dynamic_frame.from_options(\n    frame=ApplyMapping_node2,\n    connection_type=\"s3\",\n    format=\"glueparquet\",\n    connection_options={\n        \"path\": \"s3://processed-uber-data/city=\" + file_name.split(' - ')[-1].replace('.csv', '') + '/',\n        \"partitionKeys\": [],\n    },\n    format_options={\"compression\": \"snappy\"},\n    transformation_ctx=\"S3bucket_node3\",\n)\n\njob.commit()\n"
+}
